@@ -1,0 +1,42 @@
+services:
+  http10:
+    image: nginx:alpine
+    container_name: nginx-http1.0
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/http1.0/nginx.conf:/etc/nginx/nginx.conf   # Specjalna konfiguracja Nginx dla HTTP/1.0
+      - ./nginx/http1.0/conf.d/default.conf:/etc/nginx/conf.d/default.conf   # Specjalna konfiguracja Nginx dla HTTP/1.0
+      - ./build:/usr/share/nginx/html        # Aplikacja React.js
+    networks:
+      - testnet
+
+  http11:
+    image: nginx:alpine
+    container_name: nginx-http1.1
+    ports:
+      - "8081:80"
+    volumes:
+      - ./nginx/http1.1/nginx.conf:/etc/nginx/nginx.conf   # Specjalna konfiguracja Nginx dla HTTP/1.1
+      - ./nginx/http1.1/conf.d/default.conf:/etc/nginx/conf.d/default.conf   # Specjalna konfiguracja Nginx dla HTTP/1.1
+      - ./build:/usr/share/nginx/html        # Aplikacja React.js
+    networks:
+      - testnet
+
+  http2:
+    image: nginx:alpine
+    container_name: nginx-http2.0
+    ports:
+      - "8082:443"
+    volumes:
+      - ./nginx/http2.0/nginx.conf:/etc/nginx/nginx.conf   # Specjalna konfiguracja Nginx dla HTTP/2.0
+      - ./nginx/http2.0/conf.d/default.conf:/etc/nginx/conf.d/default.conf   # Specjalna konfiguracja Nginx dla HTTP/2.0
+      - ./build:/usr/share/nginx/html        # Aplikacja React.js
+      - ./nginx/http2.0/certs/nginx.crt:/etc/nginx/ssl/nginx.crt # Certyfikat SSL
+      - ./nginx/http2.0/certs/nginx.key:/etc/nginx/ssl/nginx.key # Klucz prywatny SSL
+    networks:
+      - testnet
+
+networks:
+  testnet:
+    driver: bridge
